@@ -10,7 +10,11 @@ import Foundation
 import CoreLocation
 
 public protocol ManagerLocationDelegate {
-    func getLocation(location: CLLocation)
+    func getLocation(manager: CLLocationManager, location: [CLLocation])
+    func didChangeAuthorization(manager: CLLocationManager, status: CLAuthorizationStatus)
+    func didEnterRegion()
+    func didExitRegion()
+    func monitoringDidFailFor(error: Error)
 }
 
 public class ManagerLocation: NSObject {
@@ -190,38 +194,23 @@ extension ManagerLocation: CLLocationManagerDelegate {
     }
 
     public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedWhenInUse:
-            manager.requestAlwaysAuthorization()
-            self.enableLocation()
-        case .authorizedAlways:
-            self.enableLocation()
-        case .denied, .notDetermined:
-            UserDefaults.standard.set(false, forKey: "Tracking")
-            // When app is background show notificacion
-            if UIApplication.shared.applicationState == .background {
-            }
-            // when user is active show view
-
-        default:
-            print("")
-        }
-        NotificationCenter.default.post(name:
-                                            NSNotification.Name(rawValue: "DidChangeAuthorization"),
-                                        object: manager)
+        delegate?.didChangeAuthorization(manager: manager, status: status)
     }
 
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        delegate?.getLocation(location: locations.last!)
+        delegate?.getLocation(manager: manager, location: locations)
     }
 
     public func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        delegate?.didEnterRegion()
     }
 
     public func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        delegate?.didExitRegion()
     }
 
     public func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        delegate?.monitoringDidFailFor(error: error)
     }
 
     public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
