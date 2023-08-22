@@ -71,7 +71,7 @@ public class ManagerLocation: NSObject {
     }
 
     // get type AuthorizationStatus
-    func checkAuthorization() -> CLAuthorizationStatus {
+    public func checkAuthorization() -> CLAuthorizationStatus {
         //self.configLocationManager()
         if CLLocationManager.locationServicesEnabled() {
             let authorizationStatus: CLAuthorizationStatus
@@ -88,7 +88,7 @@ public class ManagerLocation: NSObject {
     }
 
     // get type AuthorizationStatus
-    func getAuthorization() -> CLAuthorizationStatus {
+    public func getAuthorization() -> CLAuthorizationStatus {
         if CLLocationManager.locationServicesEnabled() {
             let authorizationStatus: CLAuthorizationStatus
             let manager = CLLocationManager()
