@@ -18,7 +18,7 @@ public class ManagerLocation: NSObject {
     // create strong intance "Singleton"
     public static var share = ManagerLocation()
     public var delegate: ManagerLocationDelegate?
-    lazy var locationManager: CLLocationManager = { [unowned self] in
+    public lazy var locationManager: CLLocationManager = { [unowned self] in
         var location = CLLocationManager()
         
         location.allowsBackgroundLocationUpdates = true
