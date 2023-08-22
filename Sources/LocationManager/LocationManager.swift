@@ -148,7 +148,7 @@ public class ManagerLocation: NSObject {
         }
     }
     
-    func getlocation() -> CLLocationCoordinate2D {
+    public func getlocation() -> CLLocationCoordinate2D {
         guard let location = self.locationManager.location?.coordinate else { return CLLocationCoordinate2D() }
         return location
     }
